@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
+var nodemailer = require('nodemailer');
 const feedbackRouter = express.Router();
 feedbackRouter.use(bodyParser.json());
 
@@ -23,6 +24,25 @@ feedbackRouter.route('/')
 .post(cors.corsWithOptions, (req,res,next) => {
     Feedback.create(req.body)
     .then((feedback) => {
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'homepuzzling@gmail.com',
+                pass: 'homepuzzling1234'
+            }
+        })
+        const mailOptions = {
+            from: 'homepuzzling@gmail.com', // sender address
+            to: req.body.email, // list of receivers
+            subject: 'شكراً لكم على رسالتكم', // Subject line
+            html: '<p style="text-align: right;">عزيزنا المستخدم <b>'+ req.body.firstname +'</b> </p> <p style="text-align: right;"> لقد تلقينا رسالتكم بنجاح، سيقوم الفريق المختص بمراجعة رسالتكم على الفور والرد بإقرب وقت ممكن. </p> <br> <p style="text-align: right;"> <b>ملاحظاتكم تساعدنا على التحسن 🙂🥰</b> </p>'
+        };
+        transporter.sendMail(mailOptions, function (err, info) {
+            if(err)
+              console.log(err)
+            else
+              console.log(info);
+        });
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(feedback);

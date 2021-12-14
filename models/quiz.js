@@ -71,6 +71,18 @@ const quizSchema = new Schema({
         type: Number,
         required: true,
     },
+    image: {
+        type: String,
+        required: true
+    },
+    quizViews: {
+        type: Number,
+        default: 0
+    },
+    quizType: {
+        type: String,
+        required: true
+    },
     questionsNum: {
         type: Number,
         default: 0

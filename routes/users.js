@@ -4,9 +4,9 @@ var User = require('../models/user');
 var passport = require('passport');
 var authenticate = require('../authenticate');
 const cors = require('./cors');
-
 var router = express.Router();
 router.use(BodyParser.json());
+var nodemailer = require('nodemailer');
 
 /* GET users listing. */
 router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
@@ -55,6 +55,25 @@ router.post('/signup', cors.corsWithOptions, (req,res,next) => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
           res.json({success: true, status: 'Registration Successful!'});
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                   user: 'homepuzzling@gmail.com',
+                   pass: 'homepuzzling1234'
+               }
+          })
+          const mailOptions = {
+            from: 'homepuzzling@gmail.com', // sender address
+            to: 'hamzahajyousef@gmail.com', // list of receivers
+            subject: 'User Created An Account', // Subject line
+            html: '<p>A new user with the username: <b>'+ req.body.username +'</b> has created an account on the server side of Home Puzzling</p> <br> <a href="https://control.homepuzzling.com/users">Please Check Here</a>'// plain text body
+          };
+          transporter.sendMail(mailOptions, function (err, info) {
+            if(err)
+              console.log(err)
+            else
+              console.log(info);
+         });
         });
       });
     }

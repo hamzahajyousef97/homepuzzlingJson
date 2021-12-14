@@ -13,8 +13,12 @@ var config = require('./config');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
 var uploadRouter = require('./routes/uploadRouter');
+var informationRouter = require('./routes/informationRouter');
+var youKnowRouter = require('./routes/youKnowRouter');
 var quizRouter = require('./routes/quizRouter');
+var feedbackRouter = require('./routes/feedbackRouter');
 const mongoose = require('mongoose');
 
 const url = config.mongoUrl;
@@ -28,7 +32,7 @@ var app = express();
 var http = require('http');
 
 var server = http.createServer(app);
-server.listen(8080);
+server.listen(8080, '172.31.39.20');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -49,8 +53,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/imageUpload', uploadRouter);
+app.use('/youKnow', youKnowRouter);
 app.use('/quizes', quizRouter);
-
+app.use('/feedbacks', feedbackRouter);
+app.use('/informations', informationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

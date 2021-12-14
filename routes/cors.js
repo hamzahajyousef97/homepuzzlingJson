@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const whitelist = ['http://localhost:3000', 'https://localhost:3443', 'http://localhost:4200', 'http://localhost:4300'];
+const whitelist = ['https://home-puzzling-control.firebaseapp.com', 'https://home-puzzling.firebaseapp.com', 'https://www.homepuzzling.com',
+			 'https://control.homepuzzling.com', 'https://server.homepuzzling.com'];
 var corsOptionsDelegate = (req, callback) => {
     var corsOptions;
 

@@ -83,7 +83,9 @@ quizRouter.route('/')
 quizRouter.route('/:quizLink')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req,res,next) => {
-    Quizes.findOne({"link": req.params.quizLink})
+    Quizes.findOneAndUpdate({"link": req.params.quizLink}, 
+    { $inc: { quizViews: 1 } },
+    { new: true })
     .then((quiz) => {
         if(quiz != null) {
             res.statusCode = 200;
